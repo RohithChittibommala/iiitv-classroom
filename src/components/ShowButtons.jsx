@@ -19,7 +19,7 @@ function ShowButtons(props) {
   }
 }
 
-function StudentBtns({ bgColor, courseCode, onClickHandler }) {
+function StudentBtns({ courseCode, onClickHandler }) {
   // const removeCourse = useSelector((state) => state.otherCourses.removeCourse);
 
   const queryClient = useQueryClient();

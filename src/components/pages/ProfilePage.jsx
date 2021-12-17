@@ -56,7 +56,8 @@ function ProfilePage() {
   }
 
   const handleProfilePicChange = (file) => {
-    updateProfileImage({ imageUrl: file?.link });
+    const imageUrl = file.link.replace("www.", "dl.");
+    updateProfileImage({ imageUrl });
     dispatch(updateProfilePic(file?.link));
   };
 
@@ -66,6 +67,7 @@ function ProfilePage() {
         <div className=" flex items-center   space-x-9 md:w-2/4 md:mx-auto  p-5 mt-16">
           <div className="relative">
             <img
+              datatype="image/png"
               src={user.imageUrl}
               className="rounded-full md:w-32 shadow-md"
             />
