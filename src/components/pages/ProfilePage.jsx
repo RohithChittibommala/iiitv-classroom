@@ -72,7 +72,7 @@ function ProfilePage() {
               className="rounded-full md:w-32 shadow-md"
             />
             <ReactDropboxChooser
-              extensions={[".jpeg", ".png"]}
+              extensions={[".jpeg", ".png", ".jpg"]}
               appKey={import.meta.env.VITE_DROP_BOX_KEY}
               success={(files) => handleProfilePicChange(files[0])}
             >
