@@ -58,7 +58,7 @@ function ProfilePage() {
   const handleProfilePicChange = (file) => {
     const imageUrl = file.link.replace("www.", "dl.");
     updateProfileImage({ imageUrl });
-    dispatch(updateProfilePic(file?.link));
+    dispatch(updateProfilePic(imageUrl));
   };
 
   return (
