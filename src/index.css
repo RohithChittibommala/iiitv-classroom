@@ -1,0 +1,77 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mt-18 {
+  margin-top: 70px;
+}
+
+@layer base {
+  h1 {
+    @apply text-2xl;
+  }
+
+  .btn {
+    @apply px-6 py-2 rounded font-bold transition duration-150 border-2 hover:border-transparent ease-in-out hover:text-white transform hover:-translate-y-1;
+  }
+  .primary {
+    @apply hover:bg-blue-400  border-blue-400 text-blue-400;
+  }
+
+  .outline-primary {
+    @apply border-blue-400 text-sm text-blue-400 hover:text-blue-400 font-semibold hover:bg-white hover:border-blue-400;
+  }
+
+  .outline-black {
+    @apply hover:bg-blue-400  border-blue-400 text-blue-400;
+  }
+
+  .success {
+    @apply hover:bg-green-400  border-green-400 text-green-400;
+  }
+
+  .disabled {
+    @apply opacity-50 text-white  cursor-not-allowed;
+  }
+
+  .error {
+    @apply hover:bg-red-400  border-red-400 text-red-400;
+  }
+
+  .success-filled {
+    @apply bg-green-400 text-white;
+  }
+
+  .light-blue {
+    background: hsl(231deg 48% 98%);
+  }
+
+  .input {
+    @apply border-2  border-gray-200 rounded block w-full p-3 focus:outline-none focus:ring-offset-gray-700 focus:border-blue-300;
+  }
+
+  .course-card-btn {
+    @apply relative top-11 bg-transparent shadow-2xl transition-all -left-24 group-hover:left-0 group-hover:visible border-2 opacity-0 group-hover:opacity-100 rounded-md  px-4 py-2    uppercase font-semibold invisible;
+  }
+
+  h2 {
+    @apply text-xl;
+  }
+
+  /* .tabbar {
+    @apply flex md:hidden flex-row items-center justify-around px-8 h-14 bg-white visible md:invisible fixed bottom-0 w-full rounded-t-3xl text-2xl;
+  }
+
+  .tabItem {
+    @apply text-gray-400 hover:text-gray-700 cursor-pointer w-14 h-full flex items-center justify-center;
+  }
+
+  .tabItemActive {
+    @apply bg-gradient-to-t from-white to-gray-100 border-t-4 border-gray-700 text-gray-700;
+  }
+
+  .icon {
+    @apply -mb-1;
+  } */
+}
