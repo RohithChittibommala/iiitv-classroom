@@ -7,13 +7,9 @@ function CourseCard({ bgColor: background, course, showBtns }) {
 
   const [bgColor] = React.useState(background);
 
-  const gradientStyles = `from-${bgColor.color}-${bgColor.shade} to-${
-    bgColor.color
-  }-${bgColor.shade - 200}`;
-
   return (
     <div
-      className={`relative group w-full h-80 delay-150  p-5 flex flex-col space-y-2  text-left bg-gradient-to-tl    ${gradientStyles} group-hover duration-150 cursor-pointer hover:scale-95 ease-in  transition transform  overflow-hidden  rounded-xl ${
+      className={`relative group w-full h-80 delay-150  p-5 flex flex-col space-y-2  text-left bg-gradient-to-br  from-red-300  to-pink-400  group-hover duration-150 cursor-pointer hover:to-purple-300 hover:scale-95 ease-in  transition transform  overflow-hidden  rounded-xl ${
         effect ? " opacity-0 translate-y-60" : ""
       }   `}
     >

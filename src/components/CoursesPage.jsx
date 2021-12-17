@@ -21,6 +21,23 @@ export const colors = [
 }));
 
 function CoursePage({ courses }) {
+  const colors = [
+    "red-400",
+    "pink-400",
+    "indigo-400",
+    "gray-500",
+    "purple-500",
+    "green-400",
+    "red-500",
+    "pink-500",
+    "yellow-500",
+    "indigo-500",
+    "purple-500",
+  ].map((color) => ({
+    color: color.split("-")[0],
+    shade: parseInt(color.split("-")[1]),
+  }));
+
   return (
     <div className="flex-1 grid grid-cols-1  md:grid-cols-4 gap-y-2 md:gap-10 p-5 md:p-10">
       {courses?.map((course, index) => (

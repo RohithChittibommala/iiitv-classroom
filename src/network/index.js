@@ -26,6 +26,8 @@ const api = {
   createAnnouncement: (announcement) =>
     axiosInstance.post("/course/create_announcement", announcement),
 
+  updateProfileImage: (data) => axiosInstance.post("/update_user_image", data),
+
   createAssignment: (assignment) =>
     axiosInstance.post("/course/create_assignment", assignment),
 

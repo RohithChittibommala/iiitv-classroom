@@ -30,6 +30,15 @@ function ProfilePage() {
     },
   });
 
+  const { mutate: updateProfileImage } = useMutation(
+    (data) => api.updateProfileImage(data),
+    {
+      onSuccess: () => {
+        toast.success("Profile picture updated successfully");
+      },
+    }
+  );
+
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -47,7 +56,7 @@ function ProfilePage() {
   }
 
   const handleProfilePicChange = (file) => {
-    console.log(file);
+    updateProfileImage({ imageUrl: file?.link });
     dispatch(updateProfilePic(file?.link));
   };
 

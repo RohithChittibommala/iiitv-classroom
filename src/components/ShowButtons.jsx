@@ -46,11 +46,7 @@ function StudentBtns({ bgColor, courseCode, onClickHandler }) {
     <div className="absolute bottom-20 w-full">
       <button
         onClick={handleCourseEnrollement}
-        className={` bg-${bgColor.color}-${
-          bgColor.shade - 200
-        } w-6/12 course-card-btn text-${bgColor.color}-${
-          bgColor.shade + 500
-        }  border-${bgColor.color}-${bgColor.shade + 400}   `}
+        className={` bg-red-200 course-card-btn   text-red-900  w-full mr-2 border-red-800     `}
       >
         Enroll
       </button>

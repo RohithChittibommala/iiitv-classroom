@@ -14,7 +14,7 @@ export const userSlice = createSlice({
     },
 
     updateProfilePic: (state, action) => {
-      state.user.imageUrl = action.payload;
+      state.user.user.imageUrl = action.payload;
     },
 
     setRole: (state, action) => {
