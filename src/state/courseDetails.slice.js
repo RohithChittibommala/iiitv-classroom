@@ -7,10 +7,6 @@ const courseDetailsSlice = createSlice({
   initialState,
   reducers: {
     addCourseDetails: (state, action) => {
-      ({
-        action,
-      });
-
       state[action.payload.id] = action.payload.courseDetails;
     },
 
@@ -21,6 +17,9 @@ const courseDetailsSlice = createSlice({
 
     addAssignment: (state, action) => {
       const { id, assignment } = action.payload;
+
+      console.log(action);
+
       state[id].assignments = [assignment, ...state[id].assignments];
     },
   },

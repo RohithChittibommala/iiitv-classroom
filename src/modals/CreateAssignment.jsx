@@ -35,6 +35,9 @@ function CreateAssignment({ courseId, courseCode }) {
   const { mutate } = useMutation((data) => api.createAssignment(data), {
     onSuccess: ({ data }) => {
       const { assignment } = data;
+
+      console.log(assignment);
+
       dispatch(addAssignment({ id: courseId, assignment }));
       toast.success("Assignment created successfully");
     },
@@ -94,8 +97,8 @@ function CreateAssignment({ courseId, courseCode }) {
           />
         </LocalizationProvider>
         {file && (
-          <div className="my-4 flex items-center justify-between">
-            <h3>{file.name}</h3>
+          <div className="my-4  items-center justify-between">
+            <h3 className="truncate">{file.name}</h3>
             <button onClick={() => setFile(null)} className="btn error">
               Remove
             </button>
