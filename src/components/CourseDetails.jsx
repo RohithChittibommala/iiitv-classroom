@@ -123,6 +123,20 @@ function TabPanel(props) {
 }
 
 function Assignment({ assignment, instructor }) {
+  const { user, role } = useSelector((state) => state.user);
+
+  const [isSubmitted, setIsSubmitted] = React.useState(
+    assignment?.submissions
+      .map((submission) => submission?.studentId)
+      .includes(user._id)
+  );
+
+  console.log(
+    assignment.submissions
+      .map((submission) => submission?.studentId)
+      .includes(user._id)
+  );
+
   return (
     <div className="bg-white flex flex-col space-y-1 shadow-md rounded-lg transition duration-100 border border-gray-200 ease-in my-2  border-transparent p-5">
       <div className="flex space-x-4 items-center  ">
@@ -149,9 +163,15 @@ function Assignment({ assignment, instructor }) {
             </a>
           </button>
 
-          <p className="btn px-4 py-2 text-sm cursor-pointer font-semibold hover:text-gray-600 hover:border-gray-600  border-gray-600">
-            ADD SUBMISSION
-          </p>
+          {role === "student" && !isSubmitted && (
+            <p className="btn px-4 py-2 text-sm cursor-pointer font-semibold hover:text-gray-600 hover:border-gray-600  border-gray-600">
+              ADD SUBMISSION
+            </p>
+          )}
+
+          {isSubmitted && (
+            <p className="text-green-800 font-semibold"> Turned In</p>
+          )}
         </div>
         <p className="text-red-500 text-sm mt-2">
           Due - {"    "}

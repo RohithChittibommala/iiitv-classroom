@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { Provider } from "react-redux";
 
-// import { ReactQueryDevtools } from "react-query/devtools";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 import App from "./App";
 import store from "./state";
@@ -20,6 +20,9 @@ ReactDOM.render(
           <App />
         </Provider>
       </BrowserRouter>
+      {process.env.NODE_ENV === "development" && (
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+      )}{" "}
       {/* <ReactQueryDevtools initialIsOpen={false} position="bottom-right" /> */}
     </QueryClientProvider>
   </React.StrictMode>,

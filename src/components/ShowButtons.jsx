@@ -43,7 +43,7 @@ function StudentBtns({ courseCode, onClickHandler }) {
   };
 
   return (
-    <div className="absolute bottom-20 w-full">
+    <div className="absolute bottom-20 w-3/4">
       <button
         onClick={handleCourseEnrollement}
         className={` bg-red-200 course-card-btn   text-red-900  w-full mr-2 border-red-800     `}

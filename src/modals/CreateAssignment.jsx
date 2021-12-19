@@ -25,7 +25,7 @@ const validationSchema = Yup.object().shape({
     }),
 });
 
-function CreateAssignment({ courseId }) {
+function CreateAssignment({ courseId, courseCode }) {
   const [showModal, setShowModal] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -50,7 +50,11 @@ function CreateAssignment({ courseId }) {
   });
 
   function handleSubmit(values) {
-    const data = { ...values, pdf: file?.link };
+    const data = {
+      ...values,
+      pdf: file?.link,
+      courseCode,
+    };
 
     mutate(data);
 

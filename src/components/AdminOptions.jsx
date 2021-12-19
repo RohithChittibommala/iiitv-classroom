@@ -1,9 +1,12 @@
 import React from "react";
 import { BsPlusLg } from "react-icons/bs";
-import Dialog from "../modals/Modal";
-import InputField from "./InputField";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
+import { useMutation } from "react-query";
+import api from "../network";
+import Dialog from "../modals/Modal";
+import InputField from "./InputField";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(3).required().label("Name"),
@@ -20,8 +23,15 @@ function AdminOptions() {
     onSubmit: handleSubmit,
   });
 
+  const { mutate } = useMutation((data) => api.register(data), {
+    onSuccess: () => toast.success("instructor created successfully"),
+  });
+
   function handleSubmit(values) {
-    console.trace(values);
+    const data = { ...values, role: "instructor" };
+    mutate(data);
+    setShowModal(false);
+    formik.resetForm();
   }
 
   return (
@@ -48,7 +58,6 @@ function AdminOptions() {
         />
         <InputField
           value={formik.values.email}
-          multiline
           onChange={formik.handleChange("email")}
           error={formik.touched.email ? formik.errors.email : ""}
           label="Email"
