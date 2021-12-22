@@ -2,7 +2,7 @@
 import React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router";
 import { BsArrowLeft } from "react-icons/bs";
 import Loading from "./Loading";
@@ -40,6 +40,13 @@ function CourseDetails() {
           })
         );
       },
+    }
+  );
+
+  const { mutate: handleDelete } = useMutation(
+    (data) => api.deleteAnnouncement(data),
+    {
+      onSuccess: () => {},
     }
   );
 
@@ -88,6 +95,7 @@ function CourseDetails() {
             {courseDetails?.announcements.map((announcement) => (
               <Announcement
                 key={announcement._id}
+                handleDelete={handleDelete}
                 announcement={announcement}
                 instructor={courseDetails?.instructor[0]}
               />

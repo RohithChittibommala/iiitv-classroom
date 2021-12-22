@@ -18,9 +18,22 @@ const courseDetailsSlice = createSlice({
     addAssignment: (state, action) => {
       const { id, assignment } = action.payload;
 
-      console.log(action);
-
       state[id].assignments = [assignment, ...state[id].assignments];
+    },
+    removeAnnouncement: (state, action) => {
+      const { id, announcementId } = action.payload;
+
+      state[id].announcements = state[id].announcements.filter(
+        (announcement) => announcement.id !== announcementId
+      );
+    },
+
+    removeAssignment: (state, action) => {
+      const { id, assignmentId } = action.payload;
+
+      state[id].assignments = state[id].assignments.filter(
+        (assignment) => assignment.id !== assignmentId
+      );
     },
   },
 });

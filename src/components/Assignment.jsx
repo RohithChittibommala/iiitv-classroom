@@ -1,6 +1,7 @@
 import React from "react";
 import DropboxChooser from "react-dropbox-chooser";
 import { useMutation } from "react-query";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import api from "../network";
@@ -58,7 +59,7 @@ export function Assignment({ assignment, instructor, courseCode }) {
           </p>
         </div>
       </div>
-      <div className="p-2 text-gray-800 flex flex-col space-y-3">
+      <div className="p-2 text-gray-800 flex flex-col space-y-1">
         <p>{assignment.description}</p>
         <div className="flex items-center space-x-3 ">
           {assignment.pdf && (
@@ -99,6 +100,11 @@ export function Assignment({ assignment, instructor, courseCode }) {
             minute: "2-digit",
           })}
         </p>
+        {role === "instructor" && (
+          <Link to={`/submissions/${assignment._id}`}>
+            <button className="outline-success ">View Submissions</button>
+          </Link>
+        )}
       </div>
     </div>
   );

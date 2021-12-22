@@ -14,6 +14,7 @@ import Register from "./components/pages/Register";
 import ApprovedCoursesPage from "./components/pages/ApprovedCoursesPage";
 import PendingCourses from "./components/PendingCourses";
 import ProfilePage from "./components/pages/ProfilePage";
+import SubmissionsView from "./components/pages/SubmissionsView";
 
 function App() {
   const role = useSelector((state) => state.user.role);
@@ -50,6 +51,14 @@ function App() {
           }
         />
 
+        <Route
+          path="/submissions/:assignmentId"
+          element={
+            <RequiredAuth redirectTo="/login" allowedRoles={["instructor"]}>
+              <SubmissionsView />
+            </RequiredAuth>
+          }
+        />
         <Route
           path="/courses"
           element={

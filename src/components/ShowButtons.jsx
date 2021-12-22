@@ -20,8 +20,6 @@ function ShowButtons(props) {
 }
 
 function StudentBtns({ courseCode, onClickHandler }) {
-  // const removeCourse = useSelector((state) => state.otherCourses.removeCourse);
-
   const queryClient = useQueryClient();
 
   const { mutate: enroll } = useMutation(() => api.enrollInCourse(courseCode), {
