@@ -15,6 +15,7 @@ import ApprovedCoursesPage from "./components/pages/ApprovedCoursesPage";
 import PendingCourses from "./components/PendingCourses";
 import ProfilePage from "./components/pages/ProfilePage";
 import SubmissionsView from "./components/pages/SubmissionsView";
+import Conformation from "./components/pages/Conformation";
 
 function App() {
   const role = useSelector((state) => state.user.role);
@@ -112,6 +113,16 @@ function App() {
             </NotAllowedIfLoggedIn>
           }
         />
+
+        <Route
+          path="/conformation/:token"
+          element={
+            <NotAllowedIfLoggedIn redirectTo="/">
+              <Conformation />
+            </NotAllowedIfLoggedIn>
+          }
+        />
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>

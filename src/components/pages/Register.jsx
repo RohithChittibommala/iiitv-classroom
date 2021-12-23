@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
+import { useMutation } from "react-query";
 import { useFormik } from "formik";
-
 import * as Yup from "yup";
-
 import InputField from "../InputField";
+import api from "../../network";
+import { toast } from "react-toastify";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(3).max(10).required("Name is required").label("Name"), //.max(10)
@@ -28,8 +30,19 @@ const Register = () => {
     onSubmit: handleSubmit,
   });
 
+  const { mutate, isLoading } = useMutation((data) => api.register(data), {
+    onSuccess: () => {
+      toast.info("Verify your email to login");
+    },
+
+    onError: (err) => {
+      const message = err?.response?.data?.message || "Register Failed";
+      toast.error(message);
+    },
+  });
+
   function handleSubmit(values) {
-    values;
+    mutate({ ...values, role: "student" });
     formik.resetForm();
   }
 
@@ -70,14 +83,16 @@ const Register = () => {
           <p className="ml-2">Show Password</p>
         </div>
 
-        <div className="flex justify-center items-center mt-6 ">
-          <button
-            className={"btn success w-full"}
-            onClick={formik.handleSubmit}
-          >
-            Register
-          </button>
-        </div>
+        <button
+          type="submit"
+          disabled={isLoading}
+          onClick={formik.handleSubmit}
+          className={`btn ${
+            isLoading ? "disabled" : "success-filled"
+          } w-full bg-green-400 rounded-md `}
+        >
+          {isLoading ? "Registering You in ...  " : "Register"}
+        </button>
 
         <div className="text-center my-5 flex justify-center space-x-3">
           <p> Already have accout?</p>

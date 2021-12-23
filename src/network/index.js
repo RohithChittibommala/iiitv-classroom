@@ -20,6 +20,9 @@ const api = {
   getCourseDetailsById: (courseId) =>
     axiosInstance.get(`/course/details/${courseId}`),
   getEnrolledCourses: () => axiosInstance.get("/student/enrolled_courses"),
+
+  verifyUser: (user) => axiosInstance.post("/token/verify", user),
+
   getAllInstructors: () => axiosInstance.get("/instructor/all"),
   createCourse: (course) =>
     axiosInstance.post("instructor/create_course", course),
