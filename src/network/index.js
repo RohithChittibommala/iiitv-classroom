@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAccessToken, setAccessToken } from "../token";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "https://iiitv-classroom.herokuapp.com",
   withCredentials: true,
 });
 
