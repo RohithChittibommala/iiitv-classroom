@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAccessToken, setAccessToken } from "../token";
 
 const axiosInstance = axios.create({
-  baseURL: "https://iiitv-classroom.herokuapp.com",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
 });
 
