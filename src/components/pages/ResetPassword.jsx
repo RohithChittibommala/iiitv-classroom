@@ -2,7 +2,12 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import InputField from "../InputField";
-import api from "../network";
+import api from "../../network";
+import { useMutation } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../Loading";
+import DisplayMsg from "../DisplayMessage";
+import { toast } from "react-toastify";
 
 const validationSchema = Yup.object().shape({
   password: Yup.string().min(6).required("Password is required"),
@@ -17,6 +22,19 @@ const validationSchema = Yup.object().shape({
 function ResetPassword() {
   const [showPass, setShowPass] = React.useState(false);
 
+  const navigate = useNavigate();
+
+  const { token } = useParams();
+
+  if (!token) return <DisplayMsg msg="No token provided" />;
+
+  const { mutate, isLoading, isError, error } = useMutation(api.resetPassword, {
+    onSuccess: () => {
+      toast.success("Password Reset Successful");
+      navigate("/login");
+    },
+  });
+
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -27,10 +45,12 @@ function ResetPassword() {
   });
 
   function handlePasswordReset(values) {
-    values;
-
-    formik.resetForm();
+    mutate({ token, ...values });
   }
+
+  if (isLoading) return <Loading />;
+
+  if (isError) return <DisplayMsg message={error?.response?.data?.message} />;
 
   return (
     <div className="h-full flex items-center justify-center  bg-blue-50">

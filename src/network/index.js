@@ -1,14 +1,34 @@
 import axios from "axios";
+import { getAccessToken, setAccessToken } from "../token";
 
 const axiosInstance = axios.create({
-  baseURL: "https://iiitv-classroom.herokuapp.com",
+  baseURL: "http://localhost:4000",
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("classroomToken");
+  const token = getAccessToken();
   config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
+
+axiosInstance.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const { data } = await axiosInstance.post("/token/refresh");
+
+      const accessToken = data.accessToken;
+      setAccessToken(accessToken);
+
+      return axiosInstance(originalRequest);
+    }
+    return Promise.reject(error);
+  }
+);
 
 const api = {
   getAllCourses: () => axiosInstance.get("/course/all"),
@@ -22,6 +42,8 @@ const api = {
   getEnrolledCourses: () => axiosInstance.get("/student/enrolled_courses"),
 
   verifyUser: (user) => axiosInstance.post("/token/verify", user),
+
+  refershToken: () => axiosInstance.get("/token/refresh"),
 
   getAllInstructors: () => axiosInstance.get("/instructor/all"),
   createCourse: (course) =>
@@ -42,7 +64,13 @@ const api = {
   register: (data) => axiosInstance.post("/register", data),
   login: (data) => axiosInstance.post("/login", data),
 
+  resetPassword: (data) => axiosInstance.post("/reset_password", data),
+
+  logout: () => axiosInstance.get("/logout"),
+
   getUserData: () => axiosInstance.get("/user"),
+
+  forgotPassword: (data) => axiosInstance.post("/forgot_password", data),
 
   approveCourse: (data) => axiosInstance.post("/course/approve", data),
   rejectCourse: (data) => axiosInstance.post("/course/delete", data),

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,9 +17,45 @@ import PendingCourses from "./components/PendingCourses";
 import ProfilePage from "./components/pages/ProfilePage";
 import SubmissionsView from "./components/pages/SubmissionsView";
 import Conformation from "./components/pages/Conformation";
+import { setRole, setUser } from "./state/userSlice";
+import Loading from "./components/Loading";
+import { setAccessToken } from "./token";
+import api from "./network";
+import ForgotPassword from "./components/pages/ForgotPassword";
+import ResetPassword from "./components/pages/ResetPassword";
 
 function App() {
   const role = useSelector((state) => state.user.role);
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    getUserData();
+  }, []);
+
+  if (loading) return <Loading />;
+
+  async function getUserData() {
+    try {
+      const { data } = await api.refershToken();
+      setAccessToken(data.accessToken);
+      const { data: userData } = await api.getUserData();
+
+      dispatch(setUser(userData.user));
+
+      if (userData?.user.isAdmin) dispatch(setRole("admin"));
+      else if (userData?.user.isInstructor) dispatch(setRole("instructor"));
+      else dispatch(setRole("student"));
+    } catch (error) {
+      navigate("/login");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="overflow-hidden">
@@ -119,6 +156,24 @@ function App() {
           element={
             <NotAllowedIfLoggedIn redirectTo="/">
               <Conformation />
+            </NotAllowedIfLoggedIn>
+          }
+        />
+
+        <Route
+          path="/forgot_password"
+          element={
+            <NotAllowedIfLoggedIn redirectTo="/">
+              <ForgotPassword />
+            </NotAllowedIfLoggedIn>
+          }
+        />
+
+        <Route
+          path="/conformation/:token"
+          element={
+            <NotAllowedIfLoggedIn redirectTo="/">
+              <ResetPassword />
             </NotAllowedIfLoggedIn>
           }
         />

@@ -1,49 +1,52 @@
-import { useState } from "react";
+import { useFormik } from "formik";
+import React from "react";
+import { useMutation } from "react-query";
 import { toast } from "react-toastify";
-import ToastMessage from "../components/Notify";
-import api from "../network";
+import * as Yup from "yup";
+import InputField from "../InputField";
+import api from "../../network";
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email().required().label("Email"),
+});
 
 function ForgotPassword() {
-  const [email, setEmail] = useState("");
-  const [disable, setDisable] = useState(false);
+  const { mutate } = useMutation((data) => api.forgotPassword(data), {
+    onSuccess: () => {
+      toast.info("instructions sent to your email");
+    },
+    onError: (err) => {
+      const message = err?.response?.data?.message || "Forgot Password Failed";
+      toast.error(message);
+    },
+  });
 
-  const handleClick = () => {
-    if (email.length === 0) return toast.error("no email provided");
+  function handleSubmit(values) {
+    mutate(values);
+    formik.resetForm();
+  }
 
-    const data = {
-      email,
-    };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema,
 
-    api
-      .forgotPassword(data)
-      .then((res) => {
-        toast.success("check your email for instructions");
-        setDisable(true);
-      })
-      .catch((er) => er);
-  };
+    onSubmit: handleSubmit,
+  });
 
   return (
-    <div className="h-full flex items-center justify-center">
-      <div className="md:w-80 p-4">
-        <label className="block my-4 text-lg font-semibold text-gray-500">
-          Enter your Email address
-        </label>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="outline-none border border-gray-300 p-3 inline-block w-full rounded "
-          placeholder="enter your email address"
-        />
+    <div className="h-screen flex items-center justify-center  bg-blue-50">
+      <div className="shadow-lg rounded-2xl bg-white p-6 w-10/12 md:w-4/12">
+        <h1 className="text-2xl font-bold">Enter your email address</h1>
 
-        <button
-          onClick={handleClick}
-          disabled={disable}
-          className={`px-4 py-2 capitalize  transition duration-300 my-4 bg-green-400 hover:bg-green-500 hover:scale-105 transform hover:-translate-y-1 rounded text-white font-semibold outline-none ${
-            disable ? "cursor-not-allowed" : ""
-          }`}
-        >
+        <InputField
+          label="Email"
+          value={formik.values.email}
+          onChange={formik.handleChange("email")}
+          error={formik.touched.email ? formik.errors.email : ""}
+        />
+        <button onClick={formik.handleSubmit} className="btn success">
           submit
         </button>
       </div>

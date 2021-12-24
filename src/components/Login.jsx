@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import api from "../network";
 import { useDispatch } from "react-redux";
 import { setRole, setUser } from "../state/userSlice";
+import { setAccessToken } from "../token";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().label("Email"),
@@ -27,10 +28,9 @@ const Login = () => {
       toast("Login Successful", {
         type: toast.TYPE.SUCCESS,
       });
+      setAccessToken(data.accessToken);
 
       dispatch(setUser(data.user));
-
-      localStorage.setItem("classroomToken", data.accessToken);
 
       if (data?.user.isAdmin) dispatch(setRole("admin"));
       else if (data?.user.isInstructor) dispatch(setRole("instructor"));
@@ -54,7 +54,6 @@ const Login = () => {
   });
 
   function handleSubmit(values) {
-    values;
     mutate(values);
     formik.resetForm();
   }
