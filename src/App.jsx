@@ -170,7 +170,7 @@ function App() {
         />
 
         <Route
-          path="/conformation/:token"
+          path="/reset_password/:token"
           element={
             <NotAllowedIfLoggedIn redirectTo="/">
               <ResetPassword />
