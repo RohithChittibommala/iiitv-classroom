@@ -27,8 +27,6 @@ import ResetPassword from "./components/pages/ResetPassword";
 function App() {
   const role = useSelector((state) => state.user.role);
 
-  const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const [loading, setLoading] = React.useState(true);
@@ -51,7 +49,7 @@ function App() {
       else if (userData?.user.isInstructor) dispatch(setRole("instructor"));
       else dispatch(setRole("student"));
     } catch (error) {
-      navigate("/login");
+      console.log(error);
     } finally {
       setLoading(false);
     }
