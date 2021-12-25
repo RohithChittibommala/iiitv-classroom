@@ -17,7 +17,7 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const { data } = await axiosInstance.post("/token/refresh");
 
@@ -53,6 +53,9 @@ const api = {
 
   deleteAnnouncement: (data) =>
     axiosInstance.post("/course/delete_announcement", data),
+
+  deleteAssignment: (data) =>
+    axiosInstance.post("/course/delete_assignment", data),
 
   updateProfileImage: (data) => axiosInstance.post("/update_user_image", data),
 

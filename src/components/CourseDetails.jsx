@@ -5,15 +5,19 @@ import Tab from "@mui/material/Tab";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router";
 import { BsArrowLeft } from "react-icons/bs";
-import Loading from "./Loading";
-import api from "../network";
+import { useDispatch, useSelector } from "react-redux";
 import CreateAnnouncement from "../modals/CreateAnnouncement";
 import CreateAssignment from "../modals/CreateAssignment";
-import { addCourseDetails } from "../state/courseDetails.slice";
+import {
+  addCourseDetails,
+  removeAnnouncement,
+} from "../state/courseDetails.slice";
+import Loading from "./Loading";
+import api from "../network";
 import Banner from "./Banner";
-import { useDispatch, useSelector } from "react-redux";
 import { Assignment } from "./Assignment";
 import { Announcement } from "./Announcement";
+import { toast } from "react-toastify";
 
 function CourseDetails() {
   const { courseId } = useParams();
@@ -21,6 +25,8 @@ function CourseDetails() {
   const dispatch = useDispatch();
 
   const courseDetails = useSelector((state) => state.courseDetails[courseId]);
+
+  const instructorId = courseDetails?.instructor[0]._id;
 
   const userId = useSelector((state) => state.user?.user._id);
 
@@ -43,12 +49,41 @@ function CourseDetails() {
     }
   );
 
-  const { mutate: handleDelete } = useMutation(
+  const { mutate: deleteAnnouncement } = useMutation(
     (data) => api.deleteAnnouncement(data),
     {
-      onSuccess: () => {},
+      onSuccess: () => {
+        toast.success("Announcement deleted successfully");
+      },
     }
   );
+
+  const { mutate: deleteAssignment } = useMutation(
+    (data) => api.deleteAssignment(data),
+    {
+      onSuccess: () => {
+        toast.success("Assignment deleted successfully");
+      },
+    }
+  );
+
+  const handleAnnouncementDelete = (announcementId) => {
+    deleteAnnouncement({
+      announcementId,
+      courseCode: courseDetails.courseCode,
+    });
+
+    dispatch(
+      removeAnnouncement({
+        id: courseId,
+        announcementId,
+      })
+    );
+  };
+
+  const handleAssignmentDelete = (assignmentId) => {
+    deleteAssignment({ assignmentId, courseCode: courseDetails.courseCode });
+  };
 
   if (!courseDetails && isLoading) return <Loading />;
 
@@ -66,7 +101,7 @@ function CourseDetails() {
           courseCode={courseDetails.courseCode}
         />
 
-        {courseDetails.instructor[0]._id === userId && (
+        {instructorId === userId && (
           <div className="  flex mb-10 mt-3 ">
             <CreateAnnouncement
               courseCode={courseDetails.courseCode}
@@ -95,8 +130,10 @@ function CourseDetails() {
             {courseDetails?.announcements.map((announcement) => (
               <Announcement
                 key={announcement._id}
-                handleDelete={handleDelete}
+                handleDelete={handleAnnouncementDelete}
+                isInstructor={instructorId === userId}
                 announcement={announcement}
+                courseCode={courseDetails.courseCode}
                 instructor={courseDetails?.instructor[0]}
               />
             ))}
@@ -106,6 +143,8 @@ function CourseDetails() {
               <Assignment
                 key={assignment._id || assignment.id}
                 assignment={assignment}
+                handleDelete={handleAssignmentDelete}
+                isInstructor={instructorId === userId}
                 courseCode={courseDetails.courseCode}
                 instructor={courseDetails?.instructor[0]}
               />

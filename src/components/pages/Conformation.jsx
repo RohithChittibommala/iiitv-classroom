@@ -10,7 +10,6 @@ function Conformation() {
   const { token } = useParams();
 
   const [msg, setMsg] = React.useState("");
-
   const navigate = useNavigate();
 
   React.useEffect(() => {

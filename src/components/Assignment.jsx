@@ -5,9 +5,18 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import api from "../network";
+import { MenuOptions } from "./MenuOptions";
 
-export function Assignment({ assignment, instructor, courseCode }) {
+export function Assignment({
+  assignment,
+  instructor,
+  courseCode,
+  handleDelete,
+  isInstructor,
+}) {
   const { user, role } = useSelector((state) => state.user);
+
+  const assignmentId = assignment._id;
 
   const [isSubmitted, setIsSubmitted] = React.useState(
     assignment?.submissions
@@ -43,7 +52,7 @@ export function Assignment({ assignment, instructor, courseCode }) {
   );
 
   return (
-    <div className="bg-white flex flex-col space-y-1 shadow-md rounded-lg transition duration-100 border border-gray-200 ease-in my-2  border-transparent p-5">
+    <div className="bg-white flex flex-col space-y-1 relative shadow-md rounded-lg transition duration-100 border border-gray-200 ease-in my-2  border-transparent p-5">
       <div className="flex space-x-4 items-center  ">
         <img
           className="rounded-full w-10 h-10"
@@ -58,6 +67,9 @@ export function Assignment({ assignment, instructor, courseCode }) {
             {new Date(assignment.date).toDateString()}
           </p>
         </div>
+        {isInstructor && (
+          <MenuOptions handleDelete={() => handleDelete(assignmentId)} />
+        )}
       </div>
       <div className="p-2 text-gray-800 flex flex-col space-y-1">
         <p>{assignment.description}</p>
