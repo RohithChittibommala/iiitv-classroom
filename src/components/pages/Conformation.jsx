@@ -1,6 +1,6 @@
 import React from "react";
 import { useMutation } from "react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../network";
 import DisplayMsg from "../DisplayMessage";
@@ -11,7 +11,7 @@ function Conformation() {
 
   const [msg, setMsg] = React.useState("");
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   React.useEffect(() => {
     verifyUser({ token });
@@ -22,7 +22,6 @@ function Conformation() {
     {
       onSuccess: () => {
         toast.success("User verified successfully");
-        setTimeout(() => navigate("/login"), 3000);
         setMsg("User verified successfully");
       },
       onError: () => {
